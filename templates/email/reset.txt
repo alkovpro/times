@@ -1,0 +1,14 @@
+{{ firstname }}!
+Somebody (maybe you) requested a password reset for your user account.
+If it was you, please follow this link to complete password reset:
+
+{{ confirm_url }}
+
+Your new password will be:
+
+{{ password }}
+
+If you didn't ask for password reset, just ignore this message.
+
+Regards,
+The Times app

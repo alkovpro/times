@@ -1,0 +1,7 @@
+<p>Welcome, {{ firstname }}!</p>
+<p>{{ 'Thanks for registering.' if new_user else 'Your email has been changed. Now you need to confirm it.' }}</p>
+<p>Please follow this link to confirm your email and get full access to your account:</p>
+<p><a href="{{ confirm_url }}">{{ confirm_url }}</a></p>
+<br>
+<p>Regards,</p>
+<p>The Times app</p>

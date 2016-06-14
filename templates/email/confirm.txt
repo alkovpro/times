@@ -1,0 +1,8 @@
+Welcome, {{ firstname }}!
+Thanks for registering. Please follow this link
+to confirm your email and get full access to your account:
+
+{{ confirm_url }}
+
+Regards,
+The Times app

@@ -1,0 +1,158 @@
+<div class="animate">
+	<div class="row">
+		<div class="col-md-12 col-lg-12 ">
+			<div class="card">
+				<div class="card-header card-primary card-inverse">
+					<span class="card-title">Profile</span>
+					<span class="card-title-right">
+						<a (click)="refreshProfile()"><i class="fa fa-refresh" style="font-size:18px"></i></a>
+					</span>
+				</div>
+				<div class="card-block">
+					<form>
+						<div class="form-group">
+							<label for="profileEmail">Email address</label>
+							<input [(ngModel)]="profileData.email" type="email" class="form-control" id="profileEmail"/>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-lg-6 ">
+								<div class="form-group">
+									<label for="profileFirstName">First name</label>
+									<input [(ngModel)]="profileData.firstname" type="text" class="form-control" id="profileFirstName"/>
+								</div>
+							</div>
+							<div class="col-md-12 col-lg-6 ">			
+								<div class="form-group">
+									<label for="profileLastName">Last name</label>
+									<input [(ngModel)]="profileData.lastname" type="text" class="form-control" id="profileLastName"/>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="profileUserName">User</label>
+							<input [(ngModel)]="profileData.username" type="text" class="form-control" id="profileUserName"/>
+						</div>
+						<div class="form-group">
+							<label for="profileOrgName">Organization</label>
+							<input [(ngModel)]="profileData.orgname" type="text" class="form-control" id="profileOrgName" [disabled]="!superuser"/>
+						</div>
+						<button type="submit" class="btn btn-secondary" (click)="saveProfile()">Save profile</button>
+						<button type="button" class="btn btn-secondary" (click)="changePassword()" [disabled]="changingPassword" style="margin-left:10px">Change password</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" [hidden]="!changingPassword">
+		<div class="col-md-12 col-lg-12 ">
+			<div class="card">
+				<div class="card-header card-primary card-inverse">
+					<span class="card-title">Change password</span>
+					<span class="card-title-right">
+						<a (click)="changePasswordEnd()"><i class="fa fa-minus-square"></i></a>
+					</span>
+				</div>
+				<div class="card-block">
+					<form>
+						<div class="row">
+							<div class="col-md-12 col-lg-4 ">
+								<div class="form-group">
+									<label for="profileOldPassword">Old password</label>
+									<input [(ngModel)]="passwordData.oldpassword" type="password" class="form-control" id="profileOldPassword"/>
+								</div>
+							</div>
+							<div class="col-md-12 col-lg-4 ">
+								<div class="form-group">
+									<label for="profilePassword">Password</label>
+									<input [(ngModel)]="passwordData.password" type="password" class="form-control" id="profilePassword"/>
+								</div>
+							</div>
+							<div class="col-md-12 col-lg-4 ">			
+								<div class="form-group">
+									<label for="profilePassword1">Confirm password</label>
+									<input [(ngModel)]="passwordData.password1" type="password" class="form-control" id="profilePassword1"/>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-secondary" (click)="changePasswordSave()">Save password</button>
+						<button type="button" class="btn btn-secondary" (click)="changePasswordEnd()" style="margin-left:10px">&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" [hidden]="!addingUser">
+		<div class="col-md-12 col-lg-12 ">
+			<div class="card">
+				<div class="card-header card-primary card-inverse">
+					<span class="card-title">Add new user</span>
+					<span class="card-title-right">
+						<a (click)="addUserEnd()"><i class="fa fa-minus-square"></i></a>
+					</span>
+				</div>
+				<div class="card-block">
+					<form>
+						<div class="row">
+							<div class="col-md-12 col-lg-5 ">
+								<div class="form-group">
+									<label for="addUserEmail">Email address</label>
+									<input [(ngModel)]="userData.email" type="email" class="form-control" id="addUserEmail"/>
+								</div>
+							</div>
+							<div class="col-md-12 col-lg-4 ">
+								<div class="form-group">
+									<label for="addUserUserName">User</label>
+									<input [(ngModel)]="userData.username" type="text" class="form-control" id="addUserUserName"/>
+								</div>
+							</div>
+							<div class="col-md-12 col-lg-3 ">			
+								<div class="form-group">
+									<label for="addUserRole">Role</label>
+									<div class="form-select">
+										<select [(ngModel)]="userData.role" type="select" id="addUserRole">
+											<option value="User" selected>User</option>
+											<option value="Superuser">Superuser</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-lg-6 ">
+								<div class="form-group">
+									<label for="addUserFirstName">First name</label>
+									<input [(ngModel)]="userData.firstname" type="text" class="form-control" id="addUserFirstName"/>
+								</div>
+							</div>
+							<div class="col-md-12 col-lg-6 ">			
+								<div class="form-group">
+									<label for="addUserLastName">Last name</label>
+									<input [(ngModel)]="userData.lastname" type="text" class="form-control" id="addUserLastName"/>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-secondary" (click)="addUserSave()">Save user</button>
+						<button type="button" class="btn btn-secondary" (click)="addUserEnd()" style="margin-left:10px">&nbsp;&nbsp;Cancel&nbsp;&nbsp;</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" [hidden]="!superuser">
+		<div class="col-md-12 col-lg-12 ">
+			<div class="card">
+				<div class="card-header card-primary card-inverse">
+					<span class="card-title">Users</span>
+					<div class="card-title-right">
+						<a (click)="refreshUsers(true)" style="padding-top:1px"><i class="fa fa-refresh" style="font-size:18px"></i></a>
+						<a (click)="delUser()" [hidden]="!rowSelected()"><i class="fa fa-minus-square"></i></a>
+						<a (click)="addUser()" [hidden]="addingUser"><i class="fa fa-plus-square"></i></a>
+					</div>
+				</div>
+				<div class="card-block">
+					<ag-grid-ng2 class="ag-bootstrap" style="height: 300px; width: 100%" [gridOptions]="gridOptions"></ag-grid-ng2>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

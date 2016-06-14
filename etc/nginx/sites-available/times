@@ -1,0 +1,25 @@
+server {
+    listen 80;
+    server_name times.alkov.pro;
+
+    # Settings to by-pass for static files 
+    location /  {
+        root /home/www/times/front/dist/prod;
+    }
+
+    # Serve a static file (ex. favico) outside static dir.
+    #location = /favico.ico  {
+    #    root /home/www/times/static/img/favico.ico;
+    #}
+
+    location /api {
+        include uwsgi_params;
+        uwsgi_pass unix:/home/www/times/times.sock;
+    }
+
+    error_page 404 /404.json;
+    location /404.json {
+        internal;
+        root /home/www/times/static/errors;
+    }
+}

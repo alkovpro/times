@@ -1,0 +1,34 @@
+<aside id="sidebar">
+    <div class="sidenav-outer">
+        <div class="menu-body">
+            <ul class="nav nav-pills nav-stacked sidenav">
+                <li>
+                    <a href="/#/dashboard/times" class="website-name">
+                        Times
+                    </a>
+                </li>
+                <li>
+                    <a href="/#/dashboard/times" class="logo">
+                        <img src="assets/images/flat-avatar.png" class="user-avatar" />
+                        <p class="text-xs-center">{{ barData.displayname }}</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/#/dashboard/times">
+                        <i class="fa fa-home"></i>
+                        <span>&nbsp; Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/#/dashboard/profile">
+                        <i class="fa fa-user"></i>
+                        <span>&nbsp; Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a (click)="gotoLogin()"><i class="fa fa-sign-out"></i><span>&nbsp;&nbsp; Logout</span></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</aside>

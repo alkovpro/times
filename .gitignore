@@ -1,0 +1,40 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# python project
+*.pyc
+*.PYC
+*.idea
+*.DS_Store
+instance/
+_site/
+env/
+Env/
+ENV/
+prepros.cfg
+
+# compiled output
+/front/dist
+/front/tmp
+
+# dependencies
+/front/node_modules
+/front/bower_components
+
+# IDEs and editors
+/.idea
+
+# misc
+/front/.sass-cache
+/front/connect.lock
+/front/coverage/*
+/front/libpeerconnection.log
+/front/npm-debug.log
+/front/testem.log
+/front/typings
+
+# e2e
+/front/e2e/*.js
+/front/e2e/*.map
+
+#System Files
+.DS_Store
