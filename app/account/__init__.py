@@ -22,6 +22,3 @@ account.add_resource(Users, '/users')
 account.add_resource(SaveUser, '/saveuser')
 account.add_resource(DeleteUser, '/deleteuser')
 
-# account.add_resource(job_recurrent, '/job/request/<int:request_id>')
-# account.add_resource(job_scheduled, '/job/scheduled')
-# account.add_resource(measure_results_all, '/measure/results/all/<int:measure_id>')

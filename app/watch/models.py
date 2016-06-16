@@ -1,4 +1,5 @@
 from app import db
+# TODO: Write main models
 
 
 class Watch(db.Document):

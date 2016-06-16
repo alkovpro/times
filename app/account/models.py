@@ -8,6 +8,8 @@ from datetime import datetime
 from flask import request
 import random
 import string
+# TODO: Exceptions here are too broad. Maybe they need to be fixed.
+
 
 class Account(db.Document):
     name = db.StringField(max_length=255, required=True)
@@ -16,25 +18,25 @@ class Account(db.Document):
     def __str__(self):
         return self.name
 
-    def get_users(self, start=0, limit=0, end=0, excludeUser=None, toDict=False, userID=0):
-        filter = {
-            'account' : self,
-            'deleted__ne' : True,
+    def get_users(self, start=0, limit=0, end=0, exclude_user=None):
+        _filter = {
+            'account': self,
+            'deleted__ne': True,
         }
         if limit == 0 and end > 0:
             limit = end - start
-        if excludeUser is not None:
-            filter['id__ne'] = excludeUser.id
-        res = User.objects(**filter).skip(start).limit(limit)
+        if exclude_user is not None:
+            _filter['id__ne'] = exclude_user.id
+        res = User.objects(**_filter).skip(start).limit(limit)
         return res
 
-    def get_users_count(self, excludeUser=None):
-        filter = {
-            'account' : self,
+    def get_users_count(self, exclude_user=None):
+        _filter = {
+            'account': self,
         }
-        if excludeUser is not None:
-            filter['id__ne'] = excludeUser.id
-        res = User.objects(**filter).count()
+        if exclude_user is not None:
+            _filter['id__ne'] = exclude_user.id
+        res = User.objects(**_filter).count()
         return res
 
 
@@ -66,7 +68,6 @@ class User(db.Document):
                 self.role = 'Superuser'
                 self.do_save_profile(**kwargs)
 
-
     def set_password(self, password):
         """ encrypts password and sets it to the user.password """
         self.password = User.get_password_hash(password)
@@ -75,7 +76,8 @@ class User(db.Document):
     def reset_random_password(self, length=8, strong=False):
         random_password = ''
         for x in range(length):
-            random_password += random.choice(('!@#$%^&*()_-+=' if strong else '') + string.ascii_letters + string.digits)
+            random_password += random.choice(
+                ('!@#$%^&*()_-+=' if strong else '') + string.ascii_letters + string.digits)
         # self.password = random_password
         # self.save()
         return random_password
@@ -100,14 +102,14 @@ class User(db.Document):
             return usr[0]
         return None
 
-    def get_token(self, salt='', exp_begin=0, expiration=0):
+    def get_token(self, exp_begin=0, expiration=0):
         expiration = expiration if expiration > 0 else TOKEN_EXPIRE
         exp_begin = exp_begin if exp_begin > 0 else int(datetime.utcnow().timestamp())
         expiration += exp_begin
         return jwt.encode({'user': str(self.id), 'exp': expiration}, SECRET_KEY, algorithm='HS256')
 
     @staticmethod
-    def verify_token(token, salt=''):
+    def verify_token(token):
         try:
             data = jwt.decode(token, SECRET_KEY, algorithms='HS256')
             token_id = data['user']
@@ -127,7 +129,7 @@ class User(db.Document):
             data['pwd'] = self.reset_random_password()
         token = s.dumps(data).decode('utf-8')
         if reset_password:
-            return (token, data['pwd'])
+            return token, data['pwd']
         return token
 
     @staticmethod
@@ -141,7 +143,7 @@ class User(db.Document):
         if token_id:
             usr = User.get_if_found(id=token_id)
             if reset_password:
-                return (usr, data.get('pwd'))
+                return usr, data.get('pwd')
             return usr
         return None
 
@@ -157,19 +159,19 @@ class User(db.Document):
         if self.account is not None:
             data['orgname'] = self.account.name
         superuser = self.is_superuser()
-        return (data,superuser)
+        return data, superuser
 
-    def do_save_profile(self,**kwargs):
+    def do_save_profile(self, **kwargs):
         do_save = False
         for attr in self._fields_ordered:
-            if attr in kwargs and attr not in ['id','email_confirmed','password','deleted','account']:
+            if attr in kwargs and attr not in ['id', 'email_confirmed', 'password', 'deleted', 'account']:
                 if self[attr] != kwargs[attr]:
                     self[attr] = kwargs[attr]
                     do_save = True
         if do_save:
             self.save()
 
-    def save_profile(self,**kwargs):
+    def save_profile(self, **kwargs):
         self.do_save_profile(**kwargs)
         if self.is_superuser():
             if 'orgname' in kwargs:
@@ -207,11 +209,11 @@ def check_auth(**options):
                 if auth.lower().startswith('bearer'):
                     arg['token'] = auth[7:]
             if 'token' in arg:
-                usr = User.verify_token(arg['token'], 'api')
+                usr = User.verify_token(arg['token'])
             allow = False
             if 'allow' in options:
                 allow = options['allow']
-            if (usr is not None) or (allow):
+            if (usr is not None) or allow:
                 for k, v in arg.items():
                     if v is not None:
                         kwargs[k] = v

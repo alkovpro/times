@@ -2,6 +2,7 @@ from .models import User, check_auth, Resource
 from flask_restful import reqparse
 from app.common import emails
 from flask import request, redirect
+# TODO: Exceptions here are too broad. Maybe they need to be fixed.
 
 
 class Login(Resource):
@@ -43,7 +44,6 @@ class Register(Resource):
     def action(self):
         args = self.parser.parse_args()
         success = False
-        message = ''
 
         if args['email'] != '' and args['password'] != '' and args['password1'] != '':
             if args['password'] == args['password1']:
@@ -73,7 +73,6 @@ class Reset(Resource):
     def action(self):
         args = self.parser.parse_args()
         success = False
-        message = ''
 
         if args['email'] != '':
             usr = User.objects(email=args['email'])
@@ -223,11 +222,10 @@ class Users(Resource):
                 if 'endRow' not in kwargs:
                     kwargs['endRow'] = 10
                 try:
-                    # TODO: add excludeUser to both lines
                     data = [{k: str(x[k]) for k in ['id', 'email', 'username', 'role']} for x in
                             kwargs['user'].account.get_users(start=kwargs['startRow'], end=kwargs['endRow'],
-                                                             excludeUser=kwargs['user'])]
-                    total = kwargs['user'].account.get_users_count()
+                                                             exclude_user=kwargs['user'])]
+                    total = kwargs['user'].account.get_users_count(exclude_user=kwargs['user'])
                     success = True
                 except:
                     pass
@@ -255,24 +253,23 @@ class SaveUser(Resource):
         if 'user' in kwargs:
             if kwargs['user']:
                 success = True
-                usrID = ''
                 usr = User()
                 if 'id' in kwargs and len(kwargs['id']) > 0:
-                    usrID = kwargs['id']
-                    usr = User.objects(id=usrID)
+                    usr_id = kwargs['id']
+                    usr = User.objects(id=usr_id)
                     if len(usr) > 0:
                         usr = usr[0]
                     else:
                         success = False
                         message = "User ID not found"
-                    tmpUsr = User.objects(email=kwargs['email'], id__ne=usr.id)
-                    if len(tmpUsr) > 0:
+                    tmp_usr = User.objects(email=kwargs['email'], id__ne=usr.id)
+                    if len(tmp_usr) > 0:
                         success = False
                         message = "User with this email already exists"
 
                 elif len(kwargs['email']) > 0:
-                    tmpUsr = User.objects(email=kwargs['email'])
-                    if len(tmpUsr) > 0:
+                    tmp_usr = User.objects(email=kwargs['email'])
+                    if len(tmp_usr) > 0:
                         success = False
                         message = "User with this email already exists"
 
@@ -308,8 +305,8 @@ class DeleteUser(Resource):
                 success = True
                 usr = User()
                 if 'id' in kwargs and len(kwargs['id']) > 0:
-                    usrID = kwargs['id']
-                    usr = User.objects(id=usrID)
+                    usr_id = kwargs['id']
+                    usr = User.objects(id=usr_id)
                     if len(usr) > 0:
                         usr = usr[0]
                     else:

@@ -5,6 +5,7 @@ from flask import (
 )
 from app.account import views as account
 
+
 @application.route('/confirm')
 def confirm_email():
     return account.confirm_email()
