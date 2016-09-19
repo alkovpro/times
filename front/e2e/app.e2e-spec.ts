@@ -5,10 +5,10 @@ describe('front App', function() {
 
   beforeEach(() => {
     page = new FrontPage();
-  })
+  });
 
   it('should display message saying app works', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('front works!');
+    expect(page.getParagraphText()).toEqual('app works!');
   });
 });
