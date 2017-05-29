@@ -25,8 +25,8 @@
       }
     }
   ],
-  "addons": [],
-  "packages": ["ag-grid"],
+  "addons": [""],
+  "packages": [""],
   "e2e": {
     "protractor": {
       "config": "./protractor.conf.js"

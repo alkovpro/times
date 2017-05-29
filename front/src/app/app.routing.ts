@@ -6,6 +6,11 @@ import {DashboardComponent} from './pages/dashboard/dashboard.component';
 import {TimesComponent} from "./pages/times/times.component";
 import {ProfileComponent} from "./pages/profile/profile.component";
 
+import { loginRoutes,
+         authProviders }      from './pages/login/login.routing';
+
+import { CanDeactivateGuard } from './shared/can-deactivate-guard.service';
+import { AuthGuard }          from './shared/auth-guard.service';
 
 const appRoutes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -14,6 +19,7 @@ const appRoutes: Routes = [
   {
     path: '',
     component: DashboardComponent,
+    canActivateChild: [AuthGuard],
     children: [
       {path: 'times', component: TimesComponent},
       {path: 'profile', component: ProfileComponent},
@@ -25,6 +31,9 @@ const appRoutes: Routes = [
   // { path: '**', component: PageNotFoundComponent }
 ];
 
-export const appRoutingProviders: any[] = [];
+export const appRoutingProviders: any[] = [
+  authProviders,
+  CanDeactivateGuard
+];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes, {useHash: true});

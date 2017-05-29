@@ -13,7 +13,8 @@ import {ProfileComponent} from "./pages/profile/profile.component";
 import {AgGridModule} from 'ag-grid-ng2/main';
 
 import {SidebarCmp} from "./widgets/sidebar/sidebar.component";
-// import {AuthHttp} from "angular2-jwt/angular2-jwt";
+import {provideAuth} from "angular2-jwt/angular2-jwt";
+import {DialogService} from "./shared/dialog.service";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,15 @@ import {SidebarCmp} from "./widgets/sidebar/sidebar.component";
     routing
   ],
   providers: [
-    appRoutingProviders
+    appRoutingProviders,
+    DialogService,
+    provideAuth({
+      tokenName: 'jwt',
+      globalHeaders: [{
+        'Content-Type': 'application/json',
+        'access-control-allow-origin': '*'
+      }],
+    })
   ],
   bootstrap: [AppComponent]
 })

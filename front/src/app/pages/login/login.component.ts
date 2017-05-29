@@ -1,14 +1,15 @@
 // import { Component, ViewEncapsulation } from '@angular/core';
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {LoginService} from './login.service';
+// import {LoginService} from './login.service';
 import {AuthService}    from '../../shared/auth.service';
 
 @Component({
   selector: 'login',
   templateUrl: 'login.component.html',
   styleUrls: ['login.component.scss'],
-  providers: [LoginService],
+  providers: [AuthService],
+  // providers: [LoginService],
   // encapsulation: ViewEncapsulation.None
 })
 export class LoginComponent {
@@ -47,7 +48,7 @@ export class LoginComponent {
     }
   }
 
-  constructor(public _router: Router, public loginService: LoginService) {
+  constructor(public _router: Router, public authService: AuthService) {
     this.request = false;
     this.forgot = false;
     this.showForgot(false, 0);
@@ -58,7 +59,7 @@ export class LoginComponent {
     if (this.request) return;
     if (!this.register) {
       this.request = true;
-      this.loginService.login(this.form_data)
+      this.authService.login(this.form_data)
         .subscribe(
           res => {
             this.request = false;
@@ -67,7 +68,7 @@ export class LoginComponent {
           err => {
             this.request = false;
             this.msg = {text: ['Error sending request to server. Try again later'], class_name: 'msg-error'};
-            this.loginService.loginError(err);
+            this.authService.loginError(err);
           }
         )
     } else {
@@ -123,7 +124,7 @@ export class LoginComponent {
     if (this.request) return;
     if (this.register) {
       this.request = true;
-      this.loginService.register(this.form_data)
+      this.authService.register(this.form_data)
         .subscribe(
           res => {
             this.request = false;
@@ -132,7 +133,7 @@ export class LoginComponent {
           err => {
             this.request = false;
             this.msg = {text: ['Error sending request to server. Try again later'], class_name: 'msg-error'};
-            this.loginService.registerError(err);
+            this.authService.registerError(err);
           }
         )
     } else {
@@ -160,7 +161,7 @@ export class LoginComponent {
       if (this.request) return;
       if (this.forgot) {
         this.request = true;
-        this.loginService.reset({email: this.form_data.email})
+        this.authService.reset({email: this.form_data.email})
           .subscribe(
             res => {
               this.request = false;
@@ -170,7 +171,7 @@ export class LoginComponent {
             err => {
               this.request = false;
               this.msg = {text: ['Error sending request to server. Try again later'], class_name: 'msg-error'};
-              this.loginService.resetError(err);
+              this.authService.resetError(err);
             }
           )
       } else {
@@ -199,7 +200,8 @@ export class LoginComponent {
   selector: 'login',
   templateUrl: 'login.component.html',
   styleUrls: ['login.component.scss'],
-  providers: [LoginService],
+  providers: [AuthService],
+  // providers: [LoginService],
   // encapsulation: ViewEncapsulation.None
 })
 export class LoginConfirmedComponent extends LoginComponent {
@@ -217,7 +219,8 @@ export class LoginConfirmedComponent extends LoginComponent {
   selector: 'login',
   templateUrl: 'login.component.html',
   styleUrls: ['login.component.scss'],
-  providers: [LoginService],
+  providers: [AuthService],
+  // providers: [LoginService],
   // encapsulation: ViewEncapsulation.None
 })
 export class LoginResetComponent extends LoginComponent {
